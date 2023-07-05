@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block metadescription %}
+     {% if category %}
+           {{ category.description| truncatewords:155 }}
+     {% else %}
+        welcome to Abc store where you can buy different things....
+     {% endif %}
+{% endblock %}
+
+{% block title %}
+{% if category %}
+         {{category.name}}-Abc store
+    {% else %}
+       see our new collections....
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+     {% if category %}
+         <div>
+             <div class="row my_row_class">
+                 <div class="mx-auto">
+                 <p><a href="{% url 'shop:allProdCat' %}">Our product collections</a></p>
+             </div>
+                 </div>
+         </div>
+     {% endif %}
+<div class="mx_auto text-center">
+    {% if category %}
+        <img class="my_image" src="{{category.image.url}}" alt="{{category.name}}" style="width:450px;height:350px;" >
+</div>
+<br>
+<div>
+    <h1 class="text-center my_title">{{category.name}}</h1>
+    <P class="text-justify">{{category.description}}</P>
+</div>
+    {% else %}
+<div>
+        <img class="my-image my-image_padding" src="{% static 'img/banner.png' %}" alt="our all products" width="1100px;" height="300px;">
+    </div>
+<br>
+<div>
+    <h1 class="text-center my_title">Kaira product collections</h1>
+    <p class="text-justify">You need high-quality products for your day-to-day needs, and we are here to help you to make your shopping easier. We have listed the products into categories such as breakfast and spreads, beverages, world foods, frozen food, canned foods, home baking and sweeteners, dressings, table sauces, and sides, cooking ingredients, rice, pasta & noodles, biscuits, and confectionery, chips, snacks, and specialty food. Finding rare spices from the supermarket aisles is difficult. Our grocery store brings you all kinds of spices and other cooking ingredients to add a tasty touch to your curries. You do not have to roam around the grocery store to find all the items. Just search on our online grocery store, and we will get you the best of the best.
+    Taking care of a baby is hard but shopping for babies is harder. Not anymore! Get all your baby essentials such as baby shower and bath items, baby care products and lotions, diapers, and wipes, feeding bottles and accessories,baby food, baby drinks, baby milk powder, formulas, and other essentials from us. We also have a section for your personal grooming and hygiene that includes products for face and body skincare, shower, and bath, hair care, dental care, feminine care, Men’s grooming, makeup, premium perfumes, kid’s perfumes, and other Bodycare, health and personal care.
+Place your order on cleaning essentials, Air fresheners, dishwashing liquids and tablets, food storage, tissue paper and wipes, electrical accessories, laundry essentials, home essentials, pet essentials, and eco-friendly products; we will bring it to you safely.</p>
+</div>
+    {% endif %}
+<div class="container">
+    <div class="row mx_auto">
+        {% for product in products %}
+        <div class="my-bottom_margin  col-9 col-sm-12  col-md-4 col-lg-4">
+            <div class="card text-center" style="min-width:18rem;">
+                     <a href="{{product.get_url}}"><img class="card-img-top my_image" src="{{product.image.url}}" alt="{{product.name}}" style="width:250px;height:250px;">  </a>
+                <div class="card-body">
+                    <h4>{{product.name}}</h4>
+                    <p>{{product.price}}</p>
+                </div>
+            </div><br>
+        </div>
+        {% endfor %}<br><br>
+</div>
+</div>
+    <div class="mx_auto">
+        {% if products.paginator.num_pages > 1 %}
+          <hr>
+            <div class="text-center">
+                 {% for pg in products.paginator.page_range %}
+                <a href="?page={{pg}}" class="btn btn-light btn-sm {% if products.number == pg %} active {% endif %}">{{pg}}</a>
+             {% endfor %}
+            </div>
+            {% endif %}
+         </div>
+    <br>
+</div><br>
+{% endblock %}
